@@ -24,6 +24,7 @@ class MyGame extends engine.Scene {
         this.mCollector = null;
         this.mFontImage = null;
         this.mMinion = null;
+        this.mRightMinion = null;
     }
 
     load() {
@@ -77,6 +78,19 @@ class MyGame extends engine.Scene {
         this.mHero.getTransform().setPosition(20, 60);
         this.mHero.getTransform().setSize(2, 3);
         this.mHero.setElementPixelPositions(0, 120, 0, 180);
+
+        // The right minion
+        this.mRightMinion = new engine.SpriteAnimateRenderable(this.kMinionSprite);
+        this.mRightMinion.setColor([1, 1, 1, 0]);
+        this.mRightMinion.getTransform().setPosition(26, 56.5);
+        this.mRightMinion.getTransform().setSize(4, 3.2);
+        this.mRightMinion.setSpriteSequence(512, 0,     // first element pixel position: top-left 512 is top of image, 0 is left of image
+            204, 164,       // width x height in pixels
+            5,              // number of elements in this sequence
+            0);             // horizontal padding in between
+        this.mRightMinion.setAnimationType(engine.eAnimationType.eRight);
+        this.mRightMinion.setAnimationSpeed(50);
+        // show each element for mAnimSpeed updates
     }
 
     // The update function, updates the application state. Make sure to _NOT_ draw
@@ -161,6 +175,24 @@ class MyGame extends engine.Scene {
             texCoord[engine.eTexCoordArrayIndex.eBottom],
             t
         );
+
+        // animated spritesheet 
+        this.mRightMinion.updateAnimation();
+        
+        // Animate left on the sprite sheet
+        if (engine.input.isKeyClicked(engine.input.keys.One)) {
+            this.mRightMinion.setAnimationType(engine.eAnimationType.eLeft);
+        }
+
+        // decrease the duration of showing each sprite element, thereby speeding up the animation
+        if (engine.input.isKeyClicked(engine.input.keys.Four)) {
+            this.mRightMinion.incAnimationSpeed(-2);
+        }
+
+        // increase the duration of showing each sprite element, thereby slowing down the animation
+        if (engine.input.isKeyClicked(engine.input.keys.Five)) {
+            this.mRightMinion.incAnimationSpeed(2);
+        }
     }
 
     // This is the draw function, make sure to setup proper drawing environment, and more
@@ -178,6 +210,7 @@ class MyGame extends engine.Scene {
         this.mHero.draw(this.mCamera);
         this.mFontImage.draw(this.mCamera);
         this.mMinion.draw(this.mCamera);
+        this.mRightMinion.draw(this.mCamera);
     }
 }
 
