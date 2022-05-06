@@ -26,8 +26,8 @@ class SpriteAnimateRenderable extends SpriteRenderable {
         // Information on the sprite element 
         this.mFirstElmLeft = 0.0; // 0.0 is left corner of image
         this.mElmTop = 1.0;  // 1.0 is top corner of image (from SpriteRenderable)
-        this.mElmWidth = 1.0;     
-        this.mElmHeight = 1.0;
+        this.mElmWidth = 1.0; // UV width    
+        this.mElmHeight = 1.0; // UV height
         this.mWidthPadding = 0.0;
         this.mNumElems = 1;   // number of elements in an animation
 
@@ -65,6 +65,20 @@ class SpriteAnimateRenderable extends SpriteRenderable {
         let left = this.mFirstElmLeft + (this.mCurrentElm * (this.mElmWidth + this.mWidthPadding));
         super.setElementUVCoordinate(left, left + this.mElmWidth,
                                this.mElmTop - this.mElmHeight, this.mElmTop);
+
+        console.log(
+            "Num of Elements: " + this.mNumElems + '\n',
+            "First Elm Left: " + this.mFirstElmLeft + '\n',
+            "Current El: : " + this.mCurrentElm + '\n',
+            "Width(UV): " + this.mElmWidth + '\n',
+            "Height(UV): " + this.mElmHeight + '\n',
+            "Width Padding(UV): " + this.mWidthPadding + '\n',
+            "Sampling Coordinates\n",
+            "Left: " + left + '\n',
+            "Right: " + (left + this.mElmWidth) + '\n',
+            "Bottom: " + (this.mElmTop - this.mElmHeight) + '\n',
+            "Top: " + this.mElmTop + '\n',
+        );
     }
 
     // Always set the left-most element to be the first
@@ -103,25 +117,36 @@ class SpriteAnimateRenderable extends SpriteRenderable {
     }
 
     setAnimationType(animationType) {
+        // this will reset the animation 
+        // having it start again from the beginning from
+        // of the new animation
         this.mAnimationType = animationType;
         this.mCurrentAnimAdvance = -1;
         this.mCurrentElm = 0;
         this._initAnimation();
     }
 
+    // NB: mCurrentTick is records number of frames drawn(update/draw calls made)
+    // It is compared with mUpdateinterval(which is the max number of update/draw call
+    // that has to be reached before the animation updates)
     updateAnimation() {
         this.mCurrentTick++;
         if (this.mCurrentTick >= this.mUpdateInterval) {
             this.mCurrentTick = 0;
+            // update mCurrentElm based on mCurrentAdvance 
             this.mCurrentElm += this.mCurrentAnimAdvance;
             if ((this.mCurrentElm >= 0) && (this.mCurrentElm < this.mNumElems)) {
+                // so far mCurrentElm is greater than zero and is lesser than mNumElems
+                // update UV coordinates
                 this._setSpriteElement();
             } else {
+                // reset animation
+                // start again 
                 this._initAnimation();
             }
         }
     }
 }
 
-export {eAnimationType}
+export { eAnimationType }
 export default SpriteAnimateRenderable;
