@@ -24,6 +24,7 @@ import Transform from "./transform.js";
 import Renderable from "./renderables/renderable.js";
 import TextureRenderable from "./renderables/texture_renderable.js";
 import SpriteRenderable from "./renderables/sprite_renderable.js";
+import SpriteAnimateRenderable, { eAnimationType } from "./renderables/sprite_animate_renderable.js";
 import { eTexCoordArrayIndex } from "./renderables/sprite_renderable.js";
 
 // this imports are local to this file only
@@ -71,10 +72,10 @@ export default {
     Camera, Scene, Transform, 
     
     // Renderables
-    Renderable, TextureRenderable, SpriteRenderable,
+    Renderable, TextureRenderable, SpriteRenderable, SpriteAnimateRenderable,
 
     // constants
-    eTexCoordArrayIndex, 
+    eTexCoordArrayIndex, eAnimationType,
 
     // functions
     init, cleanUp, clearCanvas,
