@@ -1,8 +1,6 @@
 /*
  * File: sprite_renderable.js
- *
  * Supports the drawing and of one sprite element mapped onto entire Renderable
- * 
  */
 "use strict";
 
